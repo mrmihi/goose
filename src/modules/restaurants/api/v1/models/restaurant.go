@@ -2,7 +2,6 @@ package models
 
 import (
 	"context"
-	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -12,17 +11,17 @@ import (
 )
 
 type Restaurant struct {
-	ID        primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Name      string             `json:"name" bson:"name,omitempty"`
-	Email     string             `json:"email" bson:"email,omitempty"`
-	Password  string             `json:"password" bson:"password,omitempty"`
-	APIKey    string             `json:"apikey" bson:"apikey,omitempty"`
-	CreatedAt string             `json:"created_at" bson:"created_at,omitempty"`
-	UpdatedAt string             `json:"updated_at" bson:"updated_at,omitempty"`
+	ID         primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Name       string             `json:"name" bson:"name,omitempty"`
+	Email      string             `json:"email" bson:"email,omitempty"`
+	Password   string             `json:"password" bson:"password,omitempty"`
+	APIKey     string             `json:"apikey" bson:"apikey,omitempty"`
+	LocationID string             `json:"Location_ID" bson:"Location_ID,omitempty"`
+	CreatedAt  string             `json:"created_at" bson:"created_at,omitempty"`
+	UpdatedAt  string             `json:"updated_at" bson:"updated_at,omitempty"`
 }
 
 func (r Restaurant) WithDefaults() Restaurant {
-	r.APIKey = uuid.New().String()
 	r.CreatedAt = time.Now().Format(time.RFC3339)
 	r.UpdatedAt = time.Now().Format(time.RFC3339)
 	return r

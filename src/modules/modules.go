@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"goose/src/middleware"
 	"goose/src/modules/auth"
+	"goose/src/modules/orders"
 	"goose/src/modules/restaurants"
 	"goose/src/modules/system"
 	"goose/src/modules/users"
@@ -19,6 +20,8 @@ func New() *fiber.App {
 	modules.Mount("/users", users.New())
 
 	modules.Mount("/restaurants", restaurants.New())
+
+	modules.Mount("/orders", orders.New())
 
 	modules.All("/*", middleware.Protect)
 
