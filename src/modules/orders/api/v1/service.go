@@ -11,6 +11,7 @@ import (
 	"strconv"
 )
 
+// creates an order in SquareUp and the Database
 func createOrderService(c *fiber.Ctx, payload dto.CreateOrderReq) *dto.CreateOrderRes {
 	log.Info("Creating order within system")
 	var order models.Order
@@ -23,7 +24,7 @@ func createOrderService(c *fiber.Ctx, payload dto.CreateOrderReq) *dto.CreateOrd
 	}
 }
 
-// getOrderServiceByID retrieves an order by its ID from the database
+// retrieves an order by its ID from SquareUp and updates the Database
 func getOrderServiceByID(c *fiber.Ctx, orderID string) *dto.CreateOrderRes {
 	log.Info("Getting the order by ID within system")
 	var order models.Order
@@ -35,6 +36,7 @@ func getOrderServiceByID(c *fiber.Ctx, orderID string) *dto.CreateOrderRes {
 	}
 }
 
+// retrieves an order by its table from SquareUp and updates the Database
 func getOrderServiceByTable(c *fiber.Ctx, tableID string) *dto.CreateOrderRes {
 	log.Info("Getting the order by table within system")
 	restaurant := c.Locals("restaurant").(*rest.Restaurant)

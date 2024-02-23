@@ -8,18 +8,11 @@ import (
 	"goose/src/modules/orders/api/v1/models"
 )
 
-// Order represents the structure of the order to be created
-type Order struct {
-	IdempotencyKey string    `json:"idempotency_key"`
-	Order          OrderBody `json:"order"`
-}
-
 func (order *Order) fromModel(m models.Order) {
 
 	order.IdempotencyKey = uuid.NewString()
 	order.Order.LocationID = "L64JNY26EYBXF"
 
-	// Map LineItems
 	for _, item := range m.Items {
 		orderItem := OrderLineItem{
 			Quantity:       item.Quantity,
@@ -27,7 +20,6 @@ func (order *Order) fromModel(m models.Order) {
 			Name:           item.Name,
 		}
 
-		// Map Modifiers
 		for _, modifier := range item.Modifiers {
 			orderItem.Modifiers = append(orderItem.Modifiers, Modifier{
 				BasePriceMoney: Money{Amount: modifier.UnitPrice, Currency: "USD"},
@@ -39,47 +31,22 @@ func (order *Order) fromModel(m models.Order) {
 		order.Order.LineItems = append(order.Order.LineItems, orderItem)
 	}
 
-	// Map Discounts
-	//for _, discount := range m.Totals.Discounts {
-	//	orderDiscount := OrderLineItemDiscount{
-	//		AmountMoney:  Money{Amount: discount.Amount, Currency: "USD"}, // Assuming discounts are in USD
-	//		AppliedMoney: Money{Amount: discount.Amount, Currency: "USD"}, // Assuming applied money is the same as amount
-	//	}
-	//	order.Order.Discounts = append(order.Order.Discounts, orderDiscount)
-	//}
-
-	// Map Taxes
-	//for _, tax := range m.Totals.Tax {
-	//	orderTax := OrderLineItemTax{
-	//		Name:       tax.Name,
-	//		Percentage: fmt.Sprintf("%d", tax.Percentage), // Assuming tax percentage is an integer
-	//	}
-	//	order.Order.Taxes = append(order.Order.Taxes, orderTax)
-	//}
-
-	// Map ServiceCharges
-	//for _, serviceCharge := range m.Totals.ServiceCharge {
-	//	orderServiceCharge := OrderServiceCharge{
-	//		AmountMoney: Money{Amount: serviceCharge.Amount, Currency: "USD"}, // Assuming service charges are in USD
-	//		Type:        serviceCharge.Type,                                   // Assuming Type field exists in models.ServiceCharge
-	//	}
-	//	order.Order.ServiceCharges = append(order.Order.ServiceCharges, orderServiceCharge)
-	//}
-
-	// Map other fields
 	order.Order.PricingOptions = OrderPricingOptions{
-		AutoApplyDiscounts: true, // Adjust accordingly based on your requirements
-		AutoApplyTaxes:     true, // Adjust accordingly based on your requirements
+		AutoApplyDiscounts: true,
+		AutoApplyTaxes:     true,
 	}
-	//order.Order.ReferenceID = m.ID.Hex() // Assuming ID in models.Order is a primitive.ObjectID
-	order.Order.State = "OPEN" // Assuming order is always open when created
-
-	//Need to set other fields as well
-
+	order.Order.State = "OPEN"
 	order.Order.Table = m.Table
-
-	//	Mapping Sources
 	order.Order.Source.Name = m.Table
+}
+
+/*
+Order represents the structure of the order to be created
+In the Square Up POS
+*/
+type Order struct {
+	IdempotencyKey string    `json:"idempotency_key"`
+	Order          OrderBody `json:"order"`
 }
 
 type OrderSource struct {
@@ -101,6 +68,7 @@ type OrderBody struct {
 }
 
 type OrderLineItemTax struct {
+	AppliedMoney Money `json:"applied_money"`
 }
 
 type OrderServiceCharge struct {

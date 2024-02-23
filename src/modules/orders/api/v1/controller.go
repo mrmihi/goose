@@ -27,7 +27,6 @@ func GetById(c *fiber.Ctx) error {
 		Message: "Orders retrieved successfully",
 		Data:    res,
 	})
-
 }
 
 func GetByTable(c *fiber.Ctx) error {

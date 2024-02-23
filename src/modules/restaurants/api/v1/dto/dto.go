@@ -3,9 +3,9 @@ package dto
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type CreateRestaurantReq struct {
-	Name       string `validate:"required"`
-	LocationID string `validate:"required"`
-	Email      string `validate:"required,email"`
+	Name       string `json:"name" validate:"required"`
+	LocationID string `json:"location_id"  validate:"required"`
+	Email      string `json:"email" validate:"required,email"`
 }
 
 type CreateRestaurantRes struct {
