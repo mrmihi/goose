@@ -9,6 +9,8 @@ type Config struct {
 	Port                  string `mapstructure:"PORT"`
 	MongoConnectionString string `mapstructure:"MONGO_CONNECTION_STRING"`
 	JWTSecret             string `mapstructure:"JWT_SECRET"`
+	SquareUpUrl           string `mapstructure:"SQUARE_UP_BASE_URL"`
+	SquareUpToken         string `mapstructure:"SQUARE_UP_TOKEN"`
 }
 
 var Env *Config

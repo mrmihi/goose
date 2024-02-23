@@ -3,7 +3,6 @@ package squareup
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/go-resty/resty/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"goose/src/integrations/squareup/dto"
@@ -19,7 +18,6 @@ type Order struct {
 func (order *Order) fromModel(m models.Order) {
 
 	order.IdempotencyKey = uuid.NewString()
-
 	order.Order.LocationID = "L64JNY26EYBXF"
 
 	// Map LineItems
@@ -143,9 +141,8 @@ func CreateOrder(payload models.Order) string {
 	requestBody, err := json.Marshal(order)
 	fmt.Println(err)
 	fmt.Println("SquareUp:" + string(requestBody))
-	client := resty.New().SetDebug(true)
 	resp := dto.CreateSquareOrderRes{}
-	_, err = client.R().
+	getClient().R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(requestBody).
 		SetResult(&resp).
@@ -156,8 +153,8 @@ func CreateOrder(payload models.Order) string {
 	return SqureUpOrderID
 }
 
-func GetOrderbyTable(tableID string) models.Order {
-	fmt.Println("GetOrderbyTable")
+func GetOrderByTable(tableID string) models.Order {
+	fmt.Println("GetOrderByTable")
 	query := map[string]any{
 		"return_entries": false,
 		"query": map[string]any{
@@ -175,26 +172,26 @@ func GetOrderbyTable(tableID string) models.Order {
 		"limit": 1,
 	}
 	resp := dto.GetSquareOrderByTableRes{}
-	client := resty.New().SetDebug(true)
-	_, _ = client.R().
-		SetHeader("Content-Type", "application/json").
-		SetAuthToken("EAAAl0Yxj-imj10VhSAU88v_bc3YLb9Zsl1jDgUd7h8hJ1jnRXMdP4SFyWLNoxOG").
+	getClient().R().
 		SetResult(&resp).
 		SetBody(query).
-		Post("https://connect.squareupsandbox.com/v2/orders/search")
+		Post("/orders/search")
+
 	if len(resp.Orders) == 0 {
 		panic(fiber.NewError(fiber.StatusNotFound, "No Orders Found for the table provided"))
 	}
 	return resp.Orders[0].ToOrder()
 }
 
-func GetOrderbyId(orderID string) models.Order {
+func GetOrderById(orderID string) models.Order {
 	resp := dto.CreateSquareOrderRes{}
-	client := resty.New()
-	_, _ = client.R().
-		SetHeader("Content-Type", "application/json").
-		SetAuthToken("EAAAl0Yxj-imj10VhSAU88v_bc3YLb9Zsl1jDgUd7h8hJ1jnRXMdP4SFyWLNoxOG").
+	getClient().R().
 		SetResult(&resp).
-		Get("https://connect.squareupsandbox.com/v2/orders/" + orderID)
+		SetError(&resp).
+		Get("/orders/" + orderID)
+
+	if len(resp.Errors) > 0 {
+		panic(fiber.NewError(fiber.StatusNotFound, "No Order Found for the ID provided"))
+	}
 	return resp.Order.ToOrder()
 }

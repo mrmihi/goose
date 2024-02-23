@@ -6,11 +6,21 @@ import (
 	"time"
 )
 
+type Error struct {
+	Code     string `json:"code"`
+	Detail   string `json:"detail"`
+	Category string `json:"category"`
+}
+
+type Errors struct {
+	Errors []Error `json:"errors"`
+}
 type GetSquareOrderByTableRes struct {
 	Orders []SquareUpOrder `json:"orders"`
 }
 type CreateSquareOrderRes struct {
-	Order SquareUpOrder `json:"order"`
+	Errors []Error       `json:"errors"`
+	Order  SquareUpOrder `json:"order"`
 }
 
 type SquareUpOrder struct {

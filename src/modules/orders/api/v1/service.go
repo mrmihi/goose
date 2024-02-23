@@ -24,7 +24,7 @@ func createOrderService(c *fiber.Ctx, payload dto.CreateOrderReq) *dto.CreateOrd
 // getOrderServiceByID retrieves an order by its ID from the database
 func getOrderServiceByID(c *fiber.Ctx, orderID string) *dto.CreateOrderRes {
 	log.Info("Getting the order by ID within system")
-	order := squareup.GetOrderbyId(orderID)
+	order := squareup.GetOrderById(orderID)
 	return &dto.CreateOrderRes{
 		Data: order,
 	}
@@ -32,7 +32,7 @@ func getOrderServiceByID(c *fiber.Ctx, orderID string) *dto.CreateOrderRes {
 
 func getOrderServiceByTable(c *fiber.Ctx, tableID string) *dto.CreateOrderRes {
 	log.Info("Getting the order by table within system")
-	order := squareup.GetOrderbyTable(tableID)
+	order := squareup.GetOrderByTable(tableID)
 	return &dto.CreateOrderRes{
 		Data: order,
 	}
