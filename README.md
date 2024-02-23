@@ -1,5 +1,12 @@
 # Goose
 
+## Description
+An API for a restaurant that operates with Square POS.
+
+## Links
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/31799606/2sA2rCTgtA)
+
 ## Prerequisites
 
  - [Air](https://github.com/cosmtrek/air) - For live reloading
