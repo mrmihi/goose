@@ -5,6 +5,7 @@ import (
 	"goose/src/middleware"
 	"goose/src/modules/auth"
 	"goose/src/modules/orders"
+	"goose/src/modules/payments"
 	"goose/src/modules/restaurants"
 	"goose/src/modules/system"
 	"goose/src/modules/users"
@@ -22,6 +23,8 @@ func New() *fiber.App {
 	modules.Mount("/restaurants", restaurants.New())
 
 	modules.Mount("/orders", orders.New())
+
+	modules.Mount("/payments", payments.New())
 
 	modules.All("/*", middleware.Protect)
 

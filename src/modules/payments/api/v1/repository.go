@@ -1,12 +1,12 @@
 package v1
 
 import (
-	"goose/src/modules/orders/api/v1/models"
+	"goose/src/modules/payments/api/v1/models"
 	"goose/src/utils"
 )
 
-var repository = utils.NewRepository[models.Order]("orders")
+var repository = utils.NewRepository[models.Payment]("orders")
 
-func Repository() utils.Repository[models.Order] {
+func Repository() utils.Repository[models.Payment] {
 	return repository
 }

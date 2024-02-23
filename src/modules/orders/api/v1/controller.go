@@ -24,7 +24,7 @@ func GetById(c *fiber.Ctx) error {
 	orderID := c.Params("orderID")
 	res := getOrderServiceByID(c, orderID)
 	return c.Status(fiber.StatusOK).JSON(global.Response[dto.CreateOrderRes]{
-		Message: "Orders created successfully",
+		Message: "Orders retrieved successfully",
 		Data:    res,
 	})
 
