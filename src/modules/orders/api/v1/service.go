@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"goose/src/integrations/squareup"
 	"goose/src/modules/orders/api/v1/dto"
 	"goose/src/modules/orders/api/v1/models"
@@ -25,7 +26,10 @@ func createOrderService(c *fiber.Ctx, payload dto.CreateOrderReq) *dto.CreateOrd
 // getOrderServiceByID retrieves an order by its ID from the database
 func getOrderServiceByID(c *fiber.Ctx, orderID string) *dto.CreateOrderRes {
 	log.Info("Getting the order by ID within system")
-	order := squareup.GetOrderById(orderID)
+	var order models.Order
+	order = squareup.GetOrderById(orderID)
+	query := primitive.M{"square_up_order_id": order.SquareUpOrderId}
+	repository.UpdateBy(query, order)
 	return &dto.CreateOrderRes{
 		Data: order,
 	}
@@ -35,6 +39,8 @@ func getOrderServiceByTable(c *fiber.Ctx, tableID string) *dto.CreateOrderRes {
 	log.Info("Getting the order by table within system")
 	restaurant := c.Locals("restaurant").(*rest.Restaurant)
 	order := squareup.GetOrderByTable(restaurant.LocationID, tableID)
+	query := primitive.M{"square_up_order_id": order.SquareUpOrderId}
+	repository.UpdateBy(query, order)
 	return &dto.CreateOrderRes{
 		Data: order,
 	}

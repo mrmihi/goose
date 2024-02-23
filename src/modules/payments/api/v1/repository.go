@@ -5,7 +5,7 @@ import (
 	"goose/src/utils"
 )
 
-var repository = utils.NewRepository[models.Payment]("orders")
+var repository = utils.NewRepository[models.Payment]("payments")
 
 func Repository() utils.Repository[models.Payment] {
 	return repository

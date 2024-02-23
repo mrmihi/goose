@@ -62,6 +62,13 @@ func (r Repository[T]) Update(id primitive.ObjectID, payload T) {
 	}
 }
 
+func (r Repository[T]) UpdateBy(query primitive.M, payload T) {
+	_, err := database.UseDefault().Collection(r.collection).UpdateOne(context.Background(), query, primitive.M{"$set": payload})
+	if err != nil {
+		panic(err)
+	}
+}
+
 func (r Repository[T]) Delete(id primitive.ObjectID) {
 	_, err := database.UseDefault().Collection(r.collection).DeleteOne(context.Background(), primitive.M{"_id": id})
 	if err != nil {

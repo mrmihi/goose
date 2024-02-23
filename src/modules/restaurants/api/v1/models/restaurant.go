@@ -16,7 +16,7 @@ type Restaurant struct {
 	Email      string             `json:"email" bson:"email,omitempty"`
 	Password   string             `json:"password" bson:"password,omitempty"`
 	APIKey     string             `json:"apikey" bson:"apikey,omitempty"`
-	LocationID string             `json:"Location_ID" bson:"Location_ID,omitempty"`
+	LocationID string             `json:"Location_ID" bson:"location_id,omitempty"`
 	CreatedAt  string             `json:"created_at" bson:"created_at,omitempty"`
 	UpdatedAt  string             `json:"updated_at" bson:"updated_at,omitempty"`
 }

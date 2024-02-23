@@ -2,7 +2,6 @@ package squareup
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"goose/src/integrations/squareup/dto"
@@ -138,22 +137,17 @@ type Money struct {
 func CreateOrder(payload models.Order) string {
 	var order Order
 	order.fromModel(payload)
-	requestBody, err := json.Marshal(order)
-	fmt.Println(err)
-	fmt.Println("SquareUp:" + string(requestBody))
+	requestBody, _ := json.Marshal(order)
 	resp := dto.CreateSquareOrderRes{}
 	getClient().R().
-		SetHeader("Content-Type", "application/json").
 		SetBody(requestBody).
 		SetResult(&resp).
-		SetAuthToken("EAAAl0Yxj-imj10VhSAU88v_bc3YLb9Zsl1jDgUd7h8hJ1jnRXMdP4SFyWLNoxOG").
 		Post("https://connect.squareupsandbox.com/v2/orders")
 	SqureUpOrderID := resp.Order.ID
-	fmt.Println("SquareUp Order:", SqureUpOrderID)
 	return SqureUpOrderID
 }
 
-func GetOrderByTable(tableID string, LocationID string) models.Order {
+func GetOrderByTable(LocationID string, tableID string) models.Order {
 
 	query := map[string]any{
 		"return_entries": false,
@@ -189,7 +183,6 @@ func GetOrderById(orderID string) models.Order {
 		SetResult(&resp).
 		SetError(&resp).
 		Get("/orders/" + orderID)
-
 	if len(resp.Errors) > 0 {
 		panic(fiber.NewError(fiber.StatusNotFound, "No Order Found for the ID provided"))
 	}
