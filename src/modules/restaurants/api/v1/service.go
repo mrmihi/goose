@@ -20,7 +20,7 @@ func createRestaurant(c *fiber.Ctx, payload dto.CreateRestaurantReq) *dto.Create
 		Email:    payload.Email,
 		Name:     payload.Name,
 		Password: utils.HashStr(generatedPassword),
-		APIKey:   generatedAPIKey,
+		APIKey:   utils.HashStr(generatedAPIKey),
 	}.WithDefaults())
 	return &dto.CreateRestaurantRes{
 		ID:       insertedID,
