@@ -6,6 +6,7 @@ import (
 	"goose/src/integrations/squareup"
 	"goose/src/modules/orders/api/v1/dto"
 	"goose/src/modules/orders/api/v1/models"
+	rest "goose/src/modules/restaurants/api/v1/models"
 	"strconv"
 )
 
@@ -32,7 +33,8 @@ func getOrderServiceByID(c *fiber.Ctx, orderID string) *dto.CreateOrderRes {
 
 func getOrderServiceByTable(c *fiber.Ctx, tableID string) *dto.CreateOrderRes {
 	log.Info("Getting the order by table within system")
-	order := squareup.GetOrderByTable(tableID)
+	restaurant := c.Locals("restaurant").(*rest.Restaurant)
+	order := squareup.GetOrderByTable(restaurant.LocationID, tableID)
 	return &dto.CreateOrderRes{
 		Data: order,
 	}

@@ -4,6 +4,7 @@ import (
 	"github.com/google/uuid"
 	"goose/src/modules/restaurants/api/v1/dto"
 	"goose/src/modules/restaurants/api/v1/models"
+	"goose/src/modules/restaurants/api/v1/repository"
 	"goose/src/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -15,7 +16,7 @@ func createRestaurant(c *fiber.Ctx, payload dto.CreateRestaurantReq) *dto.Create
 	log.Info("Creating restaurant within system - ", payload.Email)
 	generatedPassword, _ := password.Generate(8, 2, 1, false, false)
 	generatedAPIKey := uuid.New().String()
-	insertedID := repository.Create(models.Restaurant{
+	insertedID := repository.GetInstance().Create(models.Restaurant{
 		Email:    payload.Email,
 		Name:     payload.Name,
 		Password: utils.HashStr(generatedPassword),

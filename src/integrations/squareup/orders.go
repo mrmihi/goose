@@ -153,8 +153,8 @@ func CreateOrder(payload models.Order) string {
 	return SqureUpOrderID
 }
 
-func GetOrderByTable(tableID string) models.Order {
-	fmt.Println("GetOrderByTable")
+func GetOrderByTable(tableID string, LocationID string) models.Order {
+
 	query := map[string]any{
 		"return_entries": false,
 		"query": map[string]any{
@@ -167,7 +167,7 @@ func GetOrderByTable(tableID string) models.Order {
 			},
 		},
 		"location_ids": []string{
-			"L64JNY26EYBXF",
+			LocationID,
 		},
 		"limit": 1,
 	}
